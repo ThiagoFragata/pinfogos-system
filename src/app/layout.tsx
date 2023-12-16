@@ -1,9 +1,9 @@
-import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/theme/provider";
 import { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -34,14 +34,13 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Toaster />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>

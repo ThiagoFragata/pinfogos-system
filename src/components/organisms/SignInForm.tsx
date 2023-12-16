@@ -42,11 +42,17 @@ export default function SignInForm() {
 
     setLoading(true);
     setPersistence(auth, browserSessionPersistence)
-      .then(async () => {
-        await signInWithEmailAndPassword(auth, values.email, values.password);
+      .then(async (userCredential) => {
+        const user = (
+          await signInWithEmailAndPassword(auth, values.email, values.password)
+        ).user;
+
+        const accessToken = user.refreshToken;
+
         toast({
           description: "Login realizado com sucesso.",
         });
+        sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
         replace("/dashboard/sales");
       })
       .catch((error) => {

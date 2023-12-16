@@ -23,6 +23,7 @@ export function Navbar() {
         toast({
           description: "Logout realizado",
         });
+        sessionStorage.clear();
         replace("/");
       })
       .catch(() => {
