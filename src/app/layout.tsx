@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/theme/provider";
 import { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
@@ -34,7 +35,14 @@ export default function RootLayout({
         )}
       >
         <Toaster />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
