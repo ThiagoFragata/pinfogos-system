@@ -1,7 +1,7 @@
 export default function Sales() {
   return (
     <div>
-      <h1>vendas</h1>
+      <h1>Vendas</h1>
     </div>
   );
 }
