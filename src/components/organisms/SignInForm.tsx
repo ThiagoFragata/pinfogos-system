@@ -1,13 +1,20 @@
 "use client";
 import { appFirebase } from "@/services/firebase/config";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ButtonDefault } from "../atoms/ButtonDefault";
 import { ItemForm } from "../molecules/ItemForm";
 import { Form, FormField } from "../ui/form";
+import { useToast } from "../ui/use-toast";
 
 export const formSchemaSignIn = z.object({
   email: z
@@ -19,6 +26,8 @@ export const formSchemaSignIn = z.object({
 
 export default function SignInForm() {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const { replace } = useRouter();
 
   const form = useForm<z.infer<typeof formSchemaSignIn>>({
     resolver: zodResolver(formSchemaSignIn),
@@ -29,18 +38,22 @@ export default function SignInForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchemaSignIn>) {
-    setLoading(true);
-
     const auth = getAuth(appFirebase);
-    signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
+
+    setLoading(true);
+    setPersistence(auth, browserSessionPersistence)
+      .then(async () => {
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        toast({
+          description: "Login realizado com sucesso.",
+        });
+        replace("/dashboard/sales");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log({ errorCode, errorMessage });
+        toast({
+          description: "Email e/ou senha inválidos!",
+          variant: "destructive",
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -68,16 +81,14 @@ export default function SignInForm() {
           render={({ field }) => (
             <ItemForm
               label="Senha"
+              type="password"
               placeholder="Digite sua senha"
               field={{ ...field }}
             />
           )}
         />
 
-        <ButtonDefault
-          label={!loading ? "Entrar" : "Enviando"}
-          className="w-full"
-        />
+        <ButtonDefault loading={loading} label="Entrar" className="w-full" />
       </form>
     </Form>
   );
