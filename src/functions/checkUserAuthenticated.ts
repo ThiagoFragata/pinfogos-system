@@ -1,6 +1,7 @@
+import { parseCookies } from 'nookies'
+
 export const checkUserAuthenticated = () => {
-  const token = sessionStorage.getItem('accessToken')
-  const accessToken = token
+  const { 'auth.token': accessToken } = parseCookies()
 
   return !!accessToken
 }

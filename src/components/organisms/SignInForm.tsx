@@ -1,4 +1,5 @@
 'use client'
+import { authChannel } from '@/context/authContext'
 import { appFirebase } from '@/services/firebase/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -8,6 +9,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
+import { setCookie } from 'nookies'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -25,9 +27,9 @@ export const formSchemaSignIn = z.object({
 })
 
 export default function SignInForm() {
-  const [loading, setLoading] = useState(false)
   const { toast } = useToast()
   const { replace } = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchemaSignIn>>({
     resolver: zodResolver(formSchemaSignIn),
@@ -47,12 +49,17 @@ export default function SignInForm() {
           await signInWithEmailAndPassword(auth, values.email, values.password)
         ).user
 
-        const accessToken = user.refreshToken
-
         toast({
           description: 'Login realizado com sucesso.',
         })
-        sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
+
+        setCookie(undefined, 'auth.token', user.refreshToken, {
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          path: '/',
+        })
+
+        authChannel.postMessage('signIn')
+
         replace('/dashboard/sales')
       })
       .catch(() => {
