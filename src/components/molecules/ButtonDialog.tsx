@@ -1,6 +1,6 @@
-import { Dialog, DialogProps } from "../atoms/Dialog";
+import { Dialog, DialogProps } from '../atoms/Dialog'
 
-interface ButtonDialogProps extends DialogProps {}
+type ButtonDialogProps = DialogProps
 
 export function ButtonDialog({
   description,
@@ -12,5 +12,5 @@ export function ButtonDialog({
     <Dialog title={title} description={description} onPress={onPress}>
       {children}
     </Dialog>
-  );
+  )
 }

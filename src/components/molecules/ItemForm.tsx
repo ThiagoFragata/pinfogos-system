@@ -1,16 +1,16 @@
-"use client";
-import { InputForm, InputFormProps } from "../atoms/InputForm";
+'use client'
+import { InputForm, InputFormProps } from '../atoms/InputForm'
 import {
   FormControl,
   FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from '../ui/form'
 
 interface ItemFormProps extends InputFormProps {
-  label: string;
-  description?: string;
+  label: string
+  description?: string
 }
 
 export function ItemForm({
@@ -28,5 +28,5 @@ export function ItemForm({
       <FormDescription>{description}</FormDescription>
       <FormMessage />
     </FormItem>
-  );
+  )
 }

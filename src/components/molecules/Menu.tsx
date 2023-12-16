@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export function Menu() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <ul className="flex gap-4 text-zinc-400 font-medium">
       <li
         className={
-          pathname === "/dashboard/sales" ? "text-zinc-900 dark:text-white" : ""
+          pathname === '/dashboard/sales' ? 'text-zinc-900 dark:text-white' : ''
         }
       >
         <Link href="/dashboard/sales">Vendas</Link>
       </li>
       <li
         className={
-          pathname === "/dashboard/product-stock"
-            ? "text-zinc-900 dark:text-white"
-            : ""
+          pathname === '/dashboard/product-stock'
+            ? 'text-zinc-900 dark:text-white'
+            : ''
         }
       >
         <Link href="/dashboard/product-stock">Estoque</Link>
       </li>
     </ul>
-  );
+  )
 }

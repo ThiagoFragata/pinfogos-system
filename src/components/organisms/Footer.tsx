@@ -1,4 +1,4 @@
-import { ModeToggle } from "../molecules/ModeToggle";
+import { ModeToggle } from '../molecules/ModeToggle'
 
 export function Footer() {
   return (
@@ -6,5 +6,5 @@ export function Footer() {
       <small>Todos direito reservados © Parintins ShowFogos</small>
       <ModeToggle />
     </div>
-  );
+  )
 }

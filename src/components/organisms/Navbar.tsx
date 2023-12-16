@@ -1,44 +1,44 @@
-"use client";
-import Image from "next/image";
-import { Menu } from "../molecules/Menu";
+'use client'
+import Image from 'next/image'
+import { Menu } from '../molecules/Menu'
 
-import logo from "@/assets/svg/logo.svg";
+import logo from '@/assets/svg/logo.svg'
 
-import { appFirebase } from "@/services/firebase/config";
-import { ToastAction } from "@radix-ui/react-toast";
-import { getAuth, signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { ButtonSignOut } from "../atoms/ButtonSignOut";
-import { ButtonDialog } from "../molecules/ButtonDialog";
-import { useToast } from "../ui/use-toast";
+import { appFirebase } from '@/services/firebase/config'
+import { ToastAction } from '@radix-ui/react-toast'
+import { getAuth, signOut } from 'firebase/auth'
+import { useRouter } from 'next/navigation'
+import { ButtonSignOut } from '../atoms/ButtonSignOut'
+import { ButtonDialog } from '../molecules/ButtonDialog'
+import { useToast } from '../ui/use-toast'
 
 export function Navbar() {
-  const { toast } = useToast();
-  const auth = getAuth(appFirebase);
-  const { replace } = useRouter();
+  const { toast } = useToast()
+  const auth = getAuth(appFirebase)
+  const { replace } = useRouter()
 
   async function Logout() {
     await signOut(auth)
       .then(() => {
         toast({
-          description: "Logout realizado",
-        });
-        sessionStorage.clear();
-        replace("/");
+          description: 'Logout realizado',
+        })
+        sessionStorage.clear()
+        replace('/')
       })
       .catch(() => {
         toast({
-          title: "Error ao sair do sistema",
+          title: 'Error ao sair do sistema',
           description:
-            "Tente novamente e se o problema persistir entre em conta com o suporte",
+            'Tente novamente e se o problema persistir entre em conta com o suporte',
           action: <ToastAction altText="Suporte">Suporte</ToastAction>,
-        });
-      });
+        })
+      })
   }
 
   return (
     <div className="flex items-center justify-between">
-      <Image src={logo} alt={"Parintins Show Fogos"} width={200} />
+      <Image src={logo} alt={'Parintins Show Fogos'} width={200} />
 
       <Menu />
 
@@ -50,5 +50,5 @@ export function Navbar() {
         <ButtonSignOut />
       </ButtonDialog>
     </div>
-  );
+  )
 }

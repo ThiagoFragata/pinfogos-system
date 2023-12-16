@@ -1,15 +1,10 @@
-import { Footer } from "@/components/organisms/Footer";
-import { Navbar } from "@/components/organisms/Navbar";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Vendas | StockFlow",
-};
+import { Footer } from '@/components/organisms/Footer'
+import { Navbar } from '@/components/organisms/Navbar'
 
 export default function LayoutDashboard({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <div className="max-w-screen-lg mx-auto p-2">
@@ -17,5 +12,5 @@ export default function LayoutDashboard({
       <div>{children}</div>
       <Footer />
     </div>
-  );
+  )
 }
