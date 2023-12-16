@@ -1,6 +1,7 @@
 import logo from "@/assets/svg/logo.svg";
 import SignInForm from "@/components/organisms/SignInForm";
 import Image from "next/image";
+
 export default function Home() {
   return (
     <div className="flex min-h-screen">

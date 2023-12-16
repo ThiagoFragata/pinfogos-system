@@ -1,8 +1,7 @@
-import { Button } from "../ui/button";
+import { Button, ButtonProps } from "../ui/button";
 
-interface ButtonDefaultProps {
+interface ButtonDefaultProps extends ButtonProps {
   label: string;
-  className?: string;
 }
 
 export function ButtonDefault({ className, label }: ButtonDefaultProps) {

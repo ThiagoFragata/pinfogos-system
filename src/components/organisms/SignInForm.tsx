@@ -1,5 +1,8 @@
 "use client";
+import { appFirebase } from "@/services/firebase/config";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ButtonDefault } from "../atoms/ButtonDefault";
@@ -15,7 +18,8 @@ export const formSchemaSignIn = z.object({
 });
 
 export default function SignInForm() {
-  // 1. Define your form.
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchemaSignIn>>({
     resolver: zodResolver(formSchemaSignIn),
     defaultValues: {
@@ -24,12 +28,23 @@ export default function SignInForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchemaSignIn>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    alert("Submit");
+  async function onSubmit(values: z.infer<typeof formSchemaSignIn>) {
+    setLoading(true);
+
+    const auth = getAuth(appFirebase);
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log({ errorCode, errorMessage });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
@@ -59,7 +74,10 @@ export default function SignInForm() {
           )}
         />
 
-        <ButtonDefault label="Entrar" className="w-full" />
+        <ButtonDefault
+          label={!loading ? "Entrar" : "Enviando"}
+          className="w-full"
+        />
       </form>
     </Form>
   );
