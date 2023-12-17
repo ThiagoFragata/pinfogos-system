@@ -3,7 +3,7 @@ const ProductStock = () => {
     <div>
       <h1>Estoque</h1>
     </div>
-  );
-};
+  )
+}
 
-export default ProductStock;
+export default ProductStock

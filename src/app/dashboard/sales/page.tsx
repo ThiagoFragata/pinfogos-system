@@ -48,16 +48,8 @@ export default function Sales() {
         <TableProducts />
 
         <div className="flex gap-4 mt-4">
-          <Card
-            subtitle="Subtotal"
-            title="R$ 140,00"
-            description="Valor total dos produtos"
-          />
-          <Card
-            subtitle="Total"
-            title="R$ 142,00"
-            description="Valor total dos produtos + taxas"
-          />
+          <Card subtitle="Subtotal" title="R$ 140,00" description="Valor total dos produtos" />
+          <Card subtitle="Total" title="R$ 142,00" description="Valor total dos produtos + taxas" />
         </div>
       </div>
     </div>

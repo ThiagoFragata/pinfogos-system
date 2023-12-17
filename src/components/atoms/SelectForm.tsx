@@ -1,28 +1,22 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const payments = [
   {
     value: 'pix',
-    label: 'Pix',
+    label: 'Pix'
   },
   {
     value: 'money',
-    label: 'Dinheiro',
+    label: 'Dinheiro'
   },
   {
     value: 'cardDebit',
-    label: 'Cartão de Débito',
+    label: 'Cartão de Débito'
   },
   {
     value: 'cardCredit',
-    label: 'Cartão de Crédito',
-  },
+    label: 'Cartão de Crédito'
+  }
 ]
 
 export function SelectForm() {

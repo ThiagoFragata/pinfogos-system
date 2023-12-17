@@ -4,19 +4,8 @@ import { Check, Search } from 'lucide-react'
 import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
 interface ProductsProps {
@@ -26,29 +15,30 @@ interface ProductsProps {
 
 interface SelectSearchProps {
   placeholder?: string
+  products?: ProductsProps[]
 }
 
 const products = [
   {
     value: 'next.js',
-    label: 'Next.js',
+    label: 'Next.js'
   },
   {
     value: 'sveltekit',
-    label: 'SvelteKit',
+    label: 'SvelteKit'
   },
   {
     value: 'nuxt.js',
-    label: 'Nuxt.js',
+    label: 'Nuxt.js'
   },
   {
     value: 'remix',
-    label: 'Remix',
+    label: 'Remix'
   },
   {
     value: 'astro',
-    label: 'Astro',
-  },
+    label: 'Astro'
+  }
 ]
 
 export function SelectSearch({ placeholder }: SelectSearchProps) {
@@ -58,15 +48,8 @@ export function SelectSearch({ placeholder }: SelectSearchProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between"
-        >
-          {value
-            ? products.find((product) => product.value === value)?.label
-            : placeholder}
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+          {value ? products.find((product) => product.value === value)?.label : placeholder}
           <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -86,12 +69,7 @@ export function SelectSearch({ placeholder }: SelectSearchProps) {
                     setOpen(false)
                   }}
                 >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      value === product.value ? 'opacity-100' : 'opacity-0',
-                    )}
-                  />
+                  <Check className={cn('mr-2 h-4 w-4', value === product.value ? 'opacity-100' : 'opacity-0')} />
                   {product.label}
                 </CommandItem>
               ))}

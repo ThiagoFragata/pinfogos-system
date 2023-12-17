@@ -1,12 +1,12 @@
-import logo from "@/assets/svg/logo.svg";
-import SignInForm from "@/components/organisms/SignInForm";
-import Image from "next/image";
+import logo from '@/assets/svg/logo.svg'
+import SignInForm from '@/components/organisms/SignInForm'
+import Image from 'next/image'
 
 export default function Home() {
   return (
     <div className="flex min-h-screen">
       <div className="flex flex-col flex-1 justify-between bg-zinc-950 text-white p-8">
-        <Image src={logo} alt={""} />
+        <Image src={logo} alt={''} />
 
         <h3>Conectando estoque e vendas com eficiência e precisão.</h3>
       </div>
@@ -24,11 +24,10 @@ export default function Home() {
         <div className="text-sm">
           <p>Ao clicar em entrar você concorda com nossos </p>
           <p>
-            <strong>Termos de uso</strong> e{" "}
-            <strong>Politica de privacidade.</strong>
+            <strong>Termos de uso</strong> e <strong>Politica de privacidade.</strong>
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }

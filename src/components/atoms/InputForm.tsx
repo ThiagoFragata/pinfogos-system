@@ -4,7 +4,7 @@ import { formSchemaSignIn } from '../organisms/SignInForm'
 import { Input, InputProps } from '../ui/input'
 
 export interface InputFormProps extends InputProps {
-  field?: ControllerRenderProps<z.infer<typeof formSchemaSignIn>>
+  field: ControllerRenderProps<z.infer<typeof formSchemaSignIn>>
 }
 
 export function InputForm({ placeholder, type, field }: InputFormProps) {
