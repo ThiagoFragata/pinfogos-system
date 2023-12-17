@@ -8,14 +8,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { ReactNode } from "react";
+} from '@/components/ui/alert-dialog'
+import { ReactNode } from 'react'
 
 export interface DialogProps {
-  title: string;
-  description: string;
-  onPress: () => void;
-  children: ReactNode;
+  title: string
+  description: string
+  onPress: () => void
+  children: ReactNode
 }
 
 export function Dialog({ title, description, children, onPress }: DialogProps) {
@@ -33,5 +33,5 @@ export function Dialog({ title, description, children, onPress }: DialogProps) {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

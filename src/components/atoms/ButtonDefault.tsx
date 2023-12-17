@@ -1,9 +1,9 @@
-import { Loader2 } from "lucide-react";
-import { Button, ButtonProps } from "../ui/button";
+import { Loader2 } from 'lucide-react'
+import { Button, ButtonProps } from '../ui/button'
 
 interface ButtonDefaultProps extends ButtonProps {
-  label: string;
-  loading?: boolean;
+  label: string
+  loading?: boolean
 }
 
 export function ButtonDefault({
@@ -16,5 +16,5 @@ export function ButtonDefault({
       {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       {label}
     </Button>
-  );
+  )
 }
