@@ -1,8 +1,10 @@
 'use client'
+import { authChannel } from '@/context/authContext'
 import { appFirebase } from '@/services/firebase/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
+import { setCookie } from 'nookies'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -37,12 +39,17 @@ export default function SignInForm() {
       .then(async () => {
         const user = (await signInWithEmailAndPassword(auth, values.email, values.password)).user
 
-        const accessToken = user.refreshToken
-
         toast({
           description: 'Login realizado com sucesso.'
         })
-        sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
+
+        setCookie(undefined, 'auth.token', user.refreshToken, {
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          path: '/'
+        })
+
+        authChannel.postMessage('signIn')
+
         replace('/dashboard/sales')
       })
       .catch(() => {

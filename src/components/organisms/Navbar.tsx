@@ -4,10 +4,12 @@ import { Menu } from '../molecules/Menu'
 
 import logo from '@/assets/svg/logo.svg'
 
+import { authChannel } from '@/context/authContext'
 import { appFirebase } from '@/services/firebase/config'
 import { ToastAction } from '@radix-ui/react-toast'
 import { getAuth, signOut } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
+import { destroyCookie } from 'nookies'
 import { ButtonSignOut } from '../atoms/ButtonSignOut'
 import { ButtonDialog } from '../molecules/ButtonDialog'
 import { useToast } from '../ui/use-toast'
@@ -23,7 +25,8 @@ export function Navbar() {
         toast({
           description: 'Logout realizado'
         })
-        sessionStorage.clear()
+        destroyCookie(undefined, 'auth.token', { path: '/' })
+        authChannel.postMessage('signOut')
         replace('/')
       })
       .catch(() => {
