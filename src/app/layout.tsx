@@ -1,9 +1,11 @@
+import { Toaster } from '@/components/ui/toaster'
+import { AuthProvider } from '@/context/authContext'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/theme/provider'
 import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+
 import './globals.css'
-import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: 'StockFlow | Parintins Show Fogos',
@@ -25,7 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Providers>{children}</Providers>
+          <Toaster />
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>
