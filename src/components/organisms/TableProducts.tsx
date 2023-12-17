@@ -6,7 +6,7 @@ export function TableProducts() {
       <TableCaption>Nota de compra</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="">Produtos</TableHead>
+          <TableHead className="">Produto</TableHead>
           <TableHead>Quantidade</TableHead>
           <TableHead className="text-right">Valor</TableHead>
         </TableRow>

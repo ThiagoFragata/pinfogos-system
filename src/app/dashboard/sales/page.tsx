@@ -2,7 +2,7 @@ import { Card } from '@/components/atoms/Card'
 import { SelectForm } from '@/components/atoms/SelectForm'
 import { Counter } from '@/components/molecules/Counter'
 import { SelectSearch } from '@/components/molecules/SelectSearch'
-import { TableProducts } from '@/components/molecules/TableProducts'
+import { TableProducts } from '@/components/organisms/TableProducts'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 

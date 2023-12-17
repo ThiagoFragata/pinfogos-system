@@ -5,10 +5,10 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 
 export function Counter() {
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(1)
 
   function decrement() {
-    if (counter > 0) {
+    if (counter > 1) {
       setCounter((prev) => prev - 1)
     }
   }
@@ -27,7 +27,7 @@ export function Counter() {
       <Input
         className="max-w-[100px] text-center"
         type="number"
-        min={0}
+        min={1}
         max={9999}
         maxLength={4}
         value={counter}

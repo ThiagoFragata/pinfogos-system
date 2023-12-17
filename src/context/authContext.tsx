@@ -4,7 +4,7 @@ import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { appFirebase } from '@/services/firebase/config'
 import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { destroyCookie, setCookie } from 'nookies'
 import { ReactNode, createContext, useEffect } from 'react'
 interface CredentialsProps {
@@ -90,8 +90,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         destroyCookie(undefined, 'auth.token', { path: '/' })
         destroyCookie(undefined, 'user.id', { path: '/' })
 
+        replace('/')
         authChannel.postMessage('signOut')
-        redirect('/')
       })
       .catch(() => {
         toast({
