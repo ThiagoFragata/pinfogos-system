@@ -7,7 +7,7 @@ export default function LayoutDashboard({ children }: { children: React.ReactNod
   const cookieStore = cookies()
   const authenticated = cookieStore.get('auth.token')?.value
 
-  if (authenticated === undefined) {
+  if (!authenticated) {
     redirect('/')
   }
 
