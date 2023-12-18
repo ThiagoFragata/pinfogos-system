@@ -1,7 +1,7 @@
 import { Card } from '@/components/atoms/Card'
 import { SelectForm } from '@/components/atoms/SelectForm'
 import { Counter } from '@/components/molecules/Counter'
-import { SelectSearch } from '@/components/molecules/SelectSearch'
+// import { SelectSearch } from '@/components/molecules/SelectSearch'
 import { TableProducts } from '@/components/organisms/TableProducts'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
@@ -10,7 +10,7 @@ export default function Sales() {
   return (
     <div className="flex justify-between gap-8 mt-8 min-h-[600px]">
       <div className="flex-1 flex flex-col justify-between">
-        <SelectSearch placeholder="Pesquise ou digite um produto" />
+        {/* <SelectSearch placeholder="Pesquise ou digite um produto" /> */}
 
         <div className="flex items-center justify-between my-8">
           <div>

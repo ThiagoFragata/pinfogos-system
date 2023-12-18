@@ -1,6 +1,6 @@
 import { ButtonDefault } from '@/components/atoms/ButtonDefault'
 import { Card } from '@/components/atoms/Card'
-import { SelectSearch } from '@/components/molecules/SelectSearch'
+import { SelectSearchProducts } from '@/components/molecules/SelectSearchProducts'
 import { StockProducts } from '@/components/organisms/StockProducts'
 
 export default function ProductStock() {
@@ -14,7 +14,8 @@ export default function ProductStock() {
       </div>
 
       <div className="flex gap-4 mb-8">
-        <SelectSearch placeholder="Digite ou pesquise um produto" />
+        <SelectSearchProducts />
+
         <ButtonDefault label="Novo produto" />
       </div>
 
