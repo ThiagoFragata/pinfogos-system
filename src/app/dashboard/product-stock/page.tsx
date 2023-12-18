@@ -1,25 +1,35 @@
+'use client'
 import { ButtonDefault } from '@/components/atoms/ButtonDefault'
-import { Card } from '@/components/atoms/Card'
 import { SelectSearchProducts } from '@/components/molecules/SelectSearchProducts'
+import { Cards } from '@/components/organisms/Cards'
 import { StockProducts } from '@/components/organisms/StockProducts'
+import { ProductProps } from '@/interfaces/products'
+import { api } from '@/services/axios/api'
+import { useQuery } from '@tanstack/react-query'
 
 export default function ProductStock() {
+  const { data, isLoading, isRefetching } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const { data } = await api.get('stock/list')
+      return data
+    }
+  })
+
+  let productsItems: ProductProps[] = []
+  productsItems = data?.data
+
   return (
     <div>
-      <div className="flex gap-4 my-8">
-        <Card subtitle={'Entradas'} title={'+14'} description={'Quantidade adicionado'} />
-        <Card subtitle={'Saídas'} title={'+12'} description={'Quantidade retirada'} />
-        <Card subtitle={'Total'} title={'14'} description={'Quantidade total'} />
-        <Card subtitle={'Total'} title={'R$142,00'} description={'Saldo total'} />
-      </div>
+      <Cards products={productsItems} loading={isLoading} />
 
       <div className="flex gap-4 mb-8">
-        <SelectSearchProducts />
+        <SelectSearchProducts products={productsItems} loading={isLoading} refetch={isRefetching} />
 
         <ButtonDefault label="Novo produto" />
       </div>
 
-      <StockProducts />
+      <StockProducts products={productsItems} loading={isLoading} refetch={isRefetching} />
     </div>
   )
 }

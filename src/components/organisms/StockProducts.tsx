@@ -1,69 +1,65 @@
+'use client'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Edit, Plus } from 'lucide-react'
+import { ProductProps } from '@/interfaces/products'
+import { Edit, Loader2 } from 'lucide-react'
 import { Button } from '../ui/button'
+import { Skeleton } from '../ui/skeleton'
 
-export function StockProducts() {
+interface StockProductsProps {
+  products: ProductProps[]
+  loading?: boolean
+  refetch?: boolean
+}
+
+export function StockProducts({ products, loading, refetch }: StockProductsProps) {
   return (
     <Table>
       <TableCaption>Nota de compra</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="">Produto</TableHead>
-          <TableHead className="text-center">Quantidade</TableHead>
-          <TableHead className="text-center">Valor</TableHead>
-          <TableHead className="text-right">Adicionar</TableHead>
-          <TableHead className="text-right">Editar</TableHead>
+          <TableHead className="flex items-center gap-2">
+            Produto
+            {refetch && <Loader2 className="animate-spin" />}
+          </TableHead>
+          <TableHead>Quantidade</TableHead>
+          <TableHead>Valor unit</TableHead>
+          <TableHead>Editar</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">INV001</TableCell>
-          <TableCell className="text-center">12</TableCell>
-          <TableCell className="text-center">R$250,00</TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Plus />
-            </Button>
-          </TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Edit />
-            </Button>
-          </TableCell>
-        </TableRow>
-
-        <TableRow>
-          <TableCell className="font-medium">INV002</TableCell>
-          <TableCell className="text-center">12</TableCell>
-          <TableCell className="text-center">R$250,00</TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Plus />
-            </Button>
-          </TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Edit />
-            </Button>
-          </TableCell>
-        </TableRow>
-
-        <TableRow>
-          <TableCell className="font-medium">INV003</TableCell>
-          <TableCell className="text-center">12</TableCell>
-          <TableCell className="text-center">R$250,00</TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Plus />
-            </Button>
-          </TableCell>
-          <TableCell className="text-right">
-            <Button variant="ghost" className="p-2">
-              <Edit />
-            </Button>
-          </TableCell>
-        </TableRow>
+        {loading ? (
+          <TableRow className="space-y-2">
+            <TableCell>
+              <Skeleton className="h-8 w-full" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-8 w-full" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-8 w-full" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-8 w-full" />
+            </TableCell>
+          </TableRow>
+        ) : (
+          products.map((product: ProductProps) => {
+            return (
+              <TableRow key={product.id}>
+                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell>{product.qtd}</TableCell>
+                <TableCell>{product.value}</TableCell>
+                <TableCell>
+                  <Button variant="ghost" className="p-2">
+                    <Edit />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )
+          })
+        )}
+        {}
       </TableBody>
     </Table>
   )
