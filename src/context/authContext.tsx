@@ -3,10 +3,10 @@
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { appFirebase } from '@/services/firebase/config'
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { User, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { destroyCookie, setCookie } from 'nookies'
-import { ReactNode, createContext, useEffect } from 'react'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 interface CredentialsProps {
   email: string
   password: string
@@ -16,6 +16,8 @@ interface CredentialsProps {
 interface AuthContextData {
   SignIn: (credentials: CredentialsProps) => void
   SignOut: () => void
+
+  AuthenticatedGoogle: User | undefined
 }
 interface AuthProviderProps {
   children: ReactNode
@@ -28,6 +30,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { toast } = useToast()
   const { replace } = useRouter()
   const auth = getAuth(appFirebase)
+
+  const [AuthenticatedGoogle, setAuthenticatedGoogle] = useState<User>()
 
   useEffect(() => {
     authChannel = new BroadcastChannel('auth')
@@ -53,6 +57,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
+        setAuthenticatedGoogle(user)
+
         toast({
           description: 'Login realizado com sucesso.'
         })
@@ -102,5 +108,5 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
   }
 
-  return <AuthContext.Provider value={{ SignIn, SignOut }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ SignIn, SignOut, AuthenticatedGoogle }}>{children}</AuthContext.Provider>
 }

@@ -7,7 +7,7 @@ export function ButtonBack() {
   const { back } = useRouter()
 
   return (
-    <Button className="h-full" variant="ghost" onClick={() => back()}>
+    <Button className="h-full" variant="outline" onClick={() => back()}>
       <ChevronLeft className="w-6 h-6" />
     </Button>
   )

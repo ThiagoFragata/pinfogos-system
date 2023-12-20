@@ -3,8 +3,12 @@ import { queryClient } from '@/app/providers'
 import { formattedMoney } from '@/functions/formattedMoney'
 import { onlyNumbers } from '@/functions/onlyNumbers'
 import { api } from '@/services/axios/api'
+import { storage } from '@/services/firebase/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { parseCookies } from 'nookies'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { ButtonDefault } from '../atoms/ButtonDefault'
@@ -21,7 +25,38 @@ export const formSchemaAddProduct = z.object({
 })
 
 export default function CreateProductsForm() {
+  const { 'user.id': userID } = parseCookies()
   const { toast } = useToast()
+  const [thumbnail, setThumbnail] = useState<string>()
+
+  function handleUploadingProduct() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pictureInput: any = document.getElementById('thumbnailProduct')
+    const selectedFile = pictureInput.files[0] ?? null
+
+    if (selectedFile !== null) {
+      const storageRef = ref(storage, `thumbnails/${userID}/${selectedFile.name}`)
+
+      uploadBytes(storageRef, selectedFile)
+        .then(async (snapshot) => {
+          toast({
+            title: 'Sucesso',
+            description: 'Upload realizado com sucesso!'
+          })
+          setThumbnail(await getDownloadURL(snapshot.ref))
+        })
+        .catch((e) => {
+          console.log('ERR: ', e)
+        })
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Selecione uma foto do produto!',
+        variant: 'default'
+      })
+    }
+  }
+
   const form = useForm<z.infer<typeof formSchemaAddProduct>>({
     resolver: zodResolver(formSchemaAddProduct),
     defaultValues: {
@@ -32,7 +67,7 @@ export default function CreateProductsForm() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: z.infer<typeof formSchemaAddProduct>) => {
-      return api.post('/stock', values)
+      return api.post('/stock', { photo: thumbnail, ...values })
     },
     onSuccess: () => {
       toast({
@@ -58,8 +93,14 @@ export default function CreateProductsForm() {
   return (
     <div>
       <div className="mb-4">
-        <Label htmlFor="picture">Foto do produto</Label>
-        <Input id="picture" type="file" accept="png/jpg" className="border-dashed" />
+        <Label htmlFor="thumbnailProduct">Foto do produto</Label>
+        <Input
+          id="thumbnailProduct"
+          type="file"
+          accept="png/jpg"
+          className="border-dashed"
+          onChange={handleUploadingProduct}
+        />
       </div>
 
       <Form {...form}>
