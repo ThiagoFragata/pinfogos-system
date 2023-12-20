@@ -46,12 +46,7 @@ export default function SignInForm() {
           )}
         />
 
-        <ButtonDefault
-          loading={loading}
-          label="Entrar"
-          className="w-full"
-          onClick={() => setLoading((prev) => !prev)}
-        />
+        <ButtonDefault loading={loading} label="Entrar" className="w-full" />
       </form>
     </Form>
   )
