@@ -2,7 +2,7 @@ import { Skeleton } from '../ui/skeleton'
 
 interface CardProps {
   subtitle: string
-  title: string
+  title: string | number
   description: string
   loading: boolean
 }
