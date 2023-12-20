@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
-import { Montserrat as Font } from 'next/font/google'
+import { Chivo as Font } from 'next/font/google'
 
 import './globals.css'
 import { Providers } from './providers'
