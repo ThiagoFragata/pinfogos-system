@@ -1,29 +1,25 @@
 'use client'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ProductProps } from '@/interfaces/products'
-import { Edit, Loader2 } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
 
 interface StockProductsProps {
   products: ProductProps[]
   loading?: boolean
-  refetch?: boolean
 }
 
-export function StockProducts({ products, loading, refetch }: StockProductsProps) {
+export function StockProducts({ products, loading }: StockProductsProps) {
   return (
     <Table>
-      <TableCaption>Nota de compra</TableCaption>
+      <TableCaption>Lista de todos os produtos</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="flex items-center gap-2">
-            Produto
-            {refetch && <Loader2 className="animate-spin" />}
-          </TableHead>
+          <TableHead className="flex items-center gap-2">Produto</TableHead>
           <TableHead>Quantidade</TableHead>
           <TableHead>Valor unit</TableHead>
-          <TableHead>Editar</TableHead>
+          <TableHead className="text-right">Editar</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -50,7 +46,7 @@ export function StockProducts({ products, loading, refetch }: StockProductsProps
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.qtd}</TableCell>
                 <TableCell>{product.value}</TableCell>
-                <TableCell>
+                <TableCell className="text-right">
                   <Button variant="ghost" className="p-2">
                     <Edit />
                   </Button>

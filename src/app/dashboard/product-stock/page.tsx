@@ -1,7 +1,6 @@
 'use client'
-import { ButtonDefault } from '@/components/atoms/ButtonDefault'
+import { ButtonRedirect } from '@/components/atoms/ButtonRedirect'
 import { SelectSearchProducts } from '@/components/molecules/SelectSearchProducts'
-import { Cards } from '@/components/organisms/Cards'
 import { StockProducts } from '@/components/organisms/StockProducts'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
@@ -11,7 +10,7 @@ export default function ProductStock() {
   const { data, isLoading, isRefetching } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const { data } = await api.get('stock/list')
+      const { data } = await api.get('stock')
       return data
     }
   })
@@ -21,15 +20,12 @@ export default function ProductStock() {
 
   return (
     <div>
-      <Cards products={productsItems} loading={isLoading} />
-
-      <div className="flex gap-4 mb-8">
+      <div className="flex gap-4 my-8">
         <SelectSearchProducts products={productsItems} loading={isLoading} refetch={isRefetching} />
-
-        <ButtonDefault label="Novo produto" />
+        <ButtonRedirect label="Adicionar" url="/dashboard/product-stock/add-product" />
       </div>
 
-      <StockProducts products={productsItems} loading={isLoading} refetch={isRefetching} />
+      <StockProducts products={productsItems} loading={isLoading} />
     </div>
   )
 }

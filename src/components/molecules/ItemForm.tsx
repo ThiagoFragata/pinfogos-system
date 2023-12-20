@@ -9,7 +9,7 @@ interface ItemFormProps extends InputFormProps {
 
 export function ItemForm({ label, description, field, ...rest }: ItemFormProps) {
   return (
-    <FormItem className="text-left">
+    <FormItem className="text-left flex-1">
       <FormLabel>{label}</FormLabel>
       <FormControl>
         <InputForm field={{ ...field }} {...rest} />

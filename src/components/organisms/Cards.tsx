@@ -1,5 +1,6 @@
 'use client'
 
+import { formattedMoney } from '@/functions/formattedMoney'
 import { ProductProps } from '@/interfaces/products'
 import { Card } from '../atoms/Card'
 
@@ -15,8 +16,9 @@ export function Cards({ products, loading }: CardsProps) {
       const qtd = product.qtd
       return prod * qtd
     })
+
     const some = someProduct?.reduce((total, item) => total + item, 0)
-    return `R$ ${some?.toFixed(2).replace('.', ',')}`
+    return formattedMoney(String(some))
   }
 
   return (

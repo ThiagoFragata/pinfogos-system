@@ -1,7 +1,6 @@
 import { Card } from '@/components/atoms/Card'
 import { SelectForm } from '@/components/atoms/SelectForm'
 import { Counter } from '@/components/molecules/Counter'
-// import { SelectSearch } from '@/components/molecules/SelectSearch'
 import { TableProducts } from '@/components/organisms/TableProducts'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
@@ -48,8 +47,8 @@ export default function Sales() {
         <TableProducts />
 
         <div className="flex gap-4 mt-4">
-          <Card subtitle="Subtotal" title="R$ 140,00" description="Valor total dos produtos" />
-          <Card subtitle="Total" title="R$ 142,00" description="Valor total dos produtos + taxas" />
+          <Card subtitle="Subtotal" title="R$ 140,00" description="Valor total dos produtos" loading={false} />
+          <Card subtitle="Total" title="R$ 142,00" description="Valor total dos produtos + taxas" loading={false} />
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Montserrat as Font } from 'next/font/google'
 
 import './globals.css'
 import { Providers } from './providers'
@@ -16,13 +16,14 @@ export const metadata: Metadata = {
   ]
 }
 
-const fontSans = Inter({
+const fontSans = Font({
   subsets: ['latin'],
   variable: '--font-sans'
 })
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt_BR">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <Providers>{children}</Providers>
       </body>
