@@ -12,9 +12,11 @@ interface SelectSearchProductsProps {
   products: ProductProps[]
   loading?: boolean
   refetch?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setProduct?: React.Dispatch<React.SetStateAction<ProductProps[]>> | any
 }
 
-export function SelectSearchProducts({ products, loading, refetch }: SelectSearchProductsProps) {
+export function SelectSearchProducts({ products, loading, refetch, setProduct }: SelectSearchProductsProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [productID, setProductID] = useState('')
@@ -51,6 +53,7 @@ export function SelectSearchProducts({ products, loading, refetch }: SelectSearc
                   onSelect={(currentValue) => {
                     setName(currentValue === name ? '' : currentValue)
                     setProductID(item.id)
+                    setProduct(() => [item])
                     setOpen(false)
                   }}
                 >

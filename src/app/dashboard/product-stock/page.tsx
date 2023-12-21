@@ -6,24 +6,29 @@ import { StockProducts } from '@/components/organisms/StockProducts'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 export default function ProductStock() {
-  const { data, isLoading, isRefetching } = useQuery({
+  const [productsItems, setProductsItems] = useState<ProductProps[]>([])
+  const { isLoading, isRefetching } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
       const { data } = await api.get('stock')
+      setProductsItems(data.data)
       return data
     }
   })
-
-  let productsItems: ProductProps[] = []
-  productsItems = data?.data
 
   return (
     <div>
       <Cards products={productsItems} loading={isLoading} />
       <div className="flex gap-4 my-8">
-        <SelectSearchProducts products={productsItems} loading={isLoading} refetch={isRefetching} />
+        <SelectSearchProducts
+          products={productsItems}
+          loading={isLoading}
+          refetch={isRefetching}
+          setProduct={setProductsItems}
+        />
         <ButtonRedirect label="Adicionar" url="/dashboard/product-stock/add-product" />
       </div>
 
