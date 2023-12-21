@@ -1,5 +1,5 @@
 import { ButtonBack } from '@/components/atoms/ButtonBack'
-import CreateProductsForm from '@/components/organisms/CreateProductsForm'
+import EditProductForm from '@/components/organisms/EditProductForm'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
 
@@ -16,7 +16,7 @@ export default async function EditProduct({ params }: { params: { slug: string }
         </div>
       </div>
 
-      <CreateProductsForm />
+      <EditProductForm product={data} />
     </div>
   )
 }
