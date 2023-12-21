@@ -2,6 +2,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ProductProps } from '@/interfaces/products'
 import { Edit } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Button } from '../ui/button'
 import { Skeleton } from '../ui/skeleton'
 
@@ -11,6 +12,7 @@ interface StockProductsProps {
 }
 
 export function StockProducts({ products, loading }: StockProductsProps) {
+  const { push } = useRouter()
   return (
     <Table>
       <TableCaption>Lista de todos os produtos</TableCaption>
@@ -47,7 +49,11 @@ export function StockProducts({ products, loading }: StockProductsProps) {
                 <TableCell>{product.qtd}</TableCell>
                 <TableCell>{product.value}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" className="p-2">
+                  <Button
+                    variant="ghost"
+                    className="p-2"
+                    onClick={() => push(`/dashboard/product-stock/edit-product/${product.id}`)}
+                  >
                     <Edit />
                   </Button>
                 </TableCell>

@@ -1,11 +1,16 @@
+import { ProductProps } from '@/interfaces/products'
 import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+export async function POST(req: NextRequest) {
+  const body = await req.json()
+
   const res = await prisma.product
-    .findMany()
+    .create({
+      data: body
+    })
     .catch(async (e) => {
       console.error(e.message)
       process.exit(1)
@@ -17,10 +22,10 @@ export async function GET() {
   return NextResponse.json({ data: res }, { status: 200 })
 }
 
-export async function PUT(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const productID = req.nextUrl.searchParams.get('product-id')
 
-  const res = await prisma.product
+  const data: ProductProps | null = await prisma.product
     .findUnique({
       where: {
         id: productID!
@@ -34,5 +39,5 @@ export async function PUT(req: NextRequest) {
       await prisma.$disconnect()
     })
 
-  return NextResponse.json({ data: res }, { status: 200 })
+  return NextResponse.json(data, { status: 200 })
 }

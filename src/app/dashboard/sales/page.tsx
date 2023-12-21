@@ -9,8 +9,6 @@ export default function Sales() {
   return (
     <div className="flex justify-between gap-8 mt-8 min-h-[600px]">
       <div className="flex-1 flex flex-col justify-between">
-        {/* <SelectSearch placeholder="Pesquise ou digite um produto" /> */}
-
         <div className="flex items-center justify-between my-8">
           <div>
             <p className="font-medium text-gray-500">Nome do produto</p>

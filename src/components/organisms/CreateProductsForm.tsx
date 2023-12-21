@@ -67,7 +67,7 @@ export default function CreateProductsForm() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: z.infer<typeof formSchemaAddProduct>) => {
-      return api.post('/stock', { photo: thumbnail, ...values })
+      return api.post('/product', { photo: thumbnail, ...values })
     },
     onSuccess: () => {
       toast({
