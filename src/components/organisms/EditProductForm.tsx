@@ -2,6 +2,7 @@
 import { queryClient } from '@/app/providers'
 import notImg from '@/assets/svg/notImg.svg'
 import { formattedMoney } from '@/functions/formattedMoney'
+import { onlyNumbers } from '@/functions/onlyNumbers'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
 import { storage } from '@/services/firebase/config'
@@ -9,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { parseCookies } from 'nookies'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -26,12 +28,14 @@ interface EditProductFormProps {
 
 const formSchemaEditProduct = z.object({
   name: z.string().min(1, 'Informe o nome do produto'),
+  qtd: z.number().min(0, 'Informe a quantidade do produto'),
   value: z.string().min(1, 'Informe o valor do produto')
 })
 
 export default function EditProductForm({ product }: EditProductFormProps) {
   const { 'user.id': userID } = parseCookies()
   const { toast } = useToast()
+  const { replace } = useRouter()
   const [thumbnail, setThumbnail] = useState<string>()
 
   function handleUploadingProduct() {
@@ -66,21 +70,28 @@ export default function EditProductForm({ product }: EditProductFormProps) {
     resolver: zodResolver(formSchemaEditProduct),
     defaultValues: {
       name: product.name,
+      qtd: 0,
       value: product.value
     }
   })
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: z.infer<typeof formSchemaEditProduct>) => {
-      return api.post('/product', { photo: thumbnail, ...values })
+      return api.put(`product?product-id=${product.id}`, {
+        photo: thumbnail,
+        qtd: product.qtd + values.qtd,
+        name: values.name,
+        value: values.value
+      })
     },
     onSuccess: () => {
       toast({
         title: 'Sucesso',
-        description: 'Produto adicionado no estoque'
+        description: 'Produto atualizado no estoque'
       })
 
       queryClient.invalidateQueries({ queryKey: ['products'] })
+      replace('/dashboard/product-stock')
     },
     onError: (e) => {
       toast({
@@ -127,25 +138,47 @@ export default function EditProductForm({ product }: EditProductFormProps) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Valor</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Digite o valor"
-                      value={field.value}
-                      onChange={(i) => field.onChange(formattedMoney(i.target.value))}
-                      prefix={'R$ '}
-                      type="text"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex gap-4 w-full justify-between">
+              <FormField
+                control={form.control}
+                name="value"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Atualizar Valor</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Digite o valor"
+                        value={field.value}
+                        onChange={(i) => field.onChange(formattedMoney(i.target.value))}
+                        prefix={'R$ '}
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="qtd"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Adicionar mais</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Digite a quantidade"
+                        value={field.value}
+                        onChange={(i) => field.onChange(Number(onlyNumbers(i.target.value)))}
+                        prefix={'R$ '}
+                        type="text"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="flex gap-2">
               <ButtonDefault label="Atualizar" type="submit" variant="default" loading={isPending} />

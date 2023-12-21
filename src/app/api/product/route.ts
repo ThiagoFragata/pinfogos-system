@@ -41,3 +41,27 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(data, { status: 200 })
 }
+
+export async function PUT(req: NextRequest) {
+  const productID = req.nextUrl.searchParams.get('product-id')
+  const body = await req.json()
+
+  const data: ProductProps | null = await prisma.product
+    .update({
+      where: {
+        id: productID!
+      },
+      data: body
+    })
+    .catch(async (e) => {
+      console.error(e.message)
+      process.exit(1)
+    })
+    .finally(async () => {
+      await prisma.$disconnect()
+    })
+
+  await prisma.$disconnect()
+
+  return NextResponse.json(data, { status: 200 })
+}
