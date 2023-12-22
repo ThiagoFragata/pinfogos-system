@@ -1,18 +1,16 @@
 'use client'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { useProducts } from '@/hooks/useProducts'
 import { ProductProps } from '@/interfaces/products'
 import { Edit } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { SkeletonTable } from '../molecules/skeletonTable'
 import { Button } from '../ui/button'
-import { Skeleton } from '../ui/skeleton'
 
-interface StockProductsProps {
-  products: ProductProps[]
-  loading?: boolean
-}
-
-export function StockProducts({ products, loading }: StockProductsProps) {
+export function StockProducts() {
+  const { productsItems, isLoading, isRefetching } = useProducts()
   const { push } = useRouter()
+
   return (
     <Table>
       <TableCaption>Lista de todos os produtos</TableCaption>
@@ -26,23 +24,10 @@ export function StockProducts({ products, loading }: StockProductsProps) {
       </TableHeader>
 
       <TableBody>
-        {loading ? (
-          <TableRow className="space-y-2">
-            <TableCell>
-              <Skeleton className="h-8 w-full" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-8 w-full" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-8 w-full" />
-            </TableCell>
-            <TableCell>
-              <Skeleton className="h-8 w-full" />
-            </TableCell>
-          </TableRow>
+        {isLoading || isRefetching ? (
+          <SkeletonTable />
         ) : (
-          products.map((product: ProductProps) => {
+          productsItems.map((product: ProductProps) => {
             return (
               <TableRow key={product.id}>
                 <TableCell className="font-medium">{product.name}</TableCell>

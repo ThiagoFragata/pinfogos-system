@@ -4,22 +4,17 @@ import { Check, Loader2, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useProducts } from '@/hooks/useProducts'
 import { ProductProps } from '@/interfaces/products'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 
-interface SelectSearchProductsProps {
-  products: ProductProps[]
-  loading?: boolean
-  refetch?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setProduct?: React.Dispatch<React.SetStateAction<ProductProps[]>> | any
-}
-
-export function SelectSearchProducts({ products, loading, refetch, setProduct }: SelectSearchProductsProps) {
+export function SelectSearchProducts() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [productID, setProductID] = useState('')
+
+  const { productsItems, isLoading, isRefetching, setProductsItems } = useProducts()
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -29,11 +24,11 @@ export function SelectSearchProducts({ products, loading, refetch, setProduct }:
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
-          disabled={loading}
+          disabled={isLoading}
         >
           <div className="flex gap-2 items-center">
-            {loading && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
-            {refetch && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
+            {isLoading && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
+            {isRefetching && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
             {name || 'Selecione um produto...'}
           </div>
           <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -46,14 +41,14 @@ export function SelectSearchProducts({ products, loading, refetch, setProduct }:
           <CommandList>
             <CommandEmpty>Produto não encontrado</CommandEmpty>
             <CommandGroup>
-              {products?.map((item: ProductProps) => (
+              {productsItems?.map((item: ProductProps) => (
                 <CommandItem
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {
                     setName(currentValue === name ? '' : currentValue)
                     setProductID(item.id)
-                    setProduct(() => [item])
+                    setProductsItems(() => [item])
                     setOpen(false)
                   }}
                 >

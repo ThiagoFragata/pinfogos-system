@@ -1,17 +1,14 @@
 'use client'
 
 import { formattedMoney } from '@/functions/formattedMoney'
-import { ProductProps } from '@/interfaces/products'
+import { useProducts } from '@/hooks/useProducts'
 import { Card } from '../atoms/Card'
 
-interface CardsProps {
-  products: ProductProps[]
-  loading: boolean
-}
+export function Cards() {
+  const { productsItems, isLoading } = useProducts()
 
-export function Cards({ products, loading }: CardsProps) {
   function Some() {
-    const someProduct = products?.map((product) => {
+    const someProduct = productsItems?.map((product) => {
       const prod = Number(product.value.replace(/\D/g, ''))
       const qtd = product.qtd
       return { amount: prod * qtd, qtd }
@@ -25,9 +22,14 @@ export function Cards({ products, loading }: CardsProps) {
 
   return (
     <div className="flex gap-4 my-8">
-      <Card subtitle="Produtos cadastrados" title={products?.length} description="Quantidade" loading={loading} />
-      <Card subtitle="Total de itens estoque" title={Some().qtdTotal} description=" Total" loading={loading} />
-      <Card subtitle="Valor Bruto" title={Some().amountTotal} description="Saldo" loading={loading} />
+      <Card
+        subtitle="Produtos cadastrados"
+        title={productsItems?.length}
+        description="Quantidade"
+        loading={isLoading}
+      />
+      <Card subtitle="Total de itens estoque" title={Some().qtdTotal} description=" Total" loading={isLoading} />
+      <Card subtitle="Valor Bruto" title={Some().amountTotal} description="Saldo" loading={isLoading} />
     </div>
   )
 }

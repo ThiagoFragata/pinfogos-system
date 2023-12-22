@@ -7,6 +7,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useCallback, useEff
 
 interface ProductsContextData {
   productsItems: ProductProps[]
+  setProductsItems: Dispatch<SetStateAction<ProductProps[]>>
   productID: string
   setProductID: Dispatch<SetStateAction<string>>
   isLoading: boolean
@@ -74,6 +75,7 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
     <ProductsContext.Provider
       value={{
         productsItems,
+        setProductsItems,
         productID,
         setProductID,
         isLoading,
