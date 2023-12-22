@@ -10,10 +10,9 @@ interface CardsProps {
 }
 
 export function Cards({ products, loading }: CardsProps) {
-  function some() {
+  function Some() {
     const someProduct = products?.map((product) => {
       const prod = Number(product.value.replace(/\D/g, ''))
-      // const prod = parseFloat(product?.value.replace('R$', '').replace(',', '.'))
       const qtd = product.qtd
       return { amount: prod * qtd, qtd }
     })
@@ -27,8 +26,8 @@ export function Cards({ products, loading }: CardsProps) {
   return (
     <div className="flex gap-4 my-8">
       <Card subtitle="Produtos cadastrados" title={products?.length} description="Quantidade" loading={loading} />
-      <Card subtitle="Quantidade de produtos" title={some().qtdTotal} description=" Total" loading={loading} />
-      <Card subtitle="Valor Bruto" title={some().amountTotal} description="Saldo" loading={loading} />
+      <Card subtitle="Total de itens estoque" title={Some().qtdTotal} description=" Total" loading={loading} />
+      <Card subtitle="Valor Bruto" title={Some().amountTotal} description="Saldo" loading={loading} />
     </div>
   )
 }

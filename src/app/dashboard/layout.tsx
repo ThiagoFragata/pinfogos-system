@@ -12,11 +12,9 @@ export default function LayoutDashboard({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="max-w-screen-lg mx-auto p-2 min-h-screen flex flex-col justify-between">
-      <div>
-        <Navbar />
-        {children}
-      </div>
+    <div className="max-w-screen-lg mx-auto p-2 min-h-screen h-full flex flex-col">
+      <Navbar />
+      <div className="grow-1">{children}</div>
       <Footer />
     </div>
   )

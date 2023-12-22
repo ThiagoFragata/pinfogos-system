@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useProducts } from '@/hooks/useProducts'
 
 const payments = [
   {
@@ -20,11 +21,14 @@ const payments = [
 ]
 
 export function SelectForm() {
+  const { setPayment } = useProducts()
+
   return (
-    <Select>
+    <Select onValueChange={setPayment}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Forma de pagamento" />
       </SelectTrigger>
+
       <SelectContent>
         {payments.map((payment) => (
           <SelectItem key={payment.label} value={payment.value}>
