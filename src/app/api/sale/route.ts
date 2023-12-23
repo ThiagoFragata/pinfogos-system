@@ -1,20 +1,8 @@
+import { NoteProps } from '@/interfaces/sales'
 import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
-
-interface SaleProps {
-  id: string
-  qtd: number
-  value: string
-}
-
-interface NoteProps {
-  userID: string
-  amount: string
-  amountTaxes: string
-  noteProducts: SaleProps[]
-}
 
 export async function POST(req: NextRequest) {
   const body: NoteProps = await req.json()
@@ -63,6 +51,8 @@ export async function POST(req: NextRequest) {
         await prisma.sale.createMany({
           data: sales
         })
+
+        return NextResponse.json({ message: 'Venda registrada' }, { status: 200 })
       } else {
         console.log(`Nenhum usuário encontrado para o UID ${body.userID}`)
         throw new Error('Usuário sem permissão/inexistente')
@@ -73,10 +63,8 @@ export async function POST(req: NextRequest) {
     }
   } catch (error) {
     console.error(error)
-    return error
+    return NextResponse.json({ message: error }, { status: 400 })
   } finally {
     await prisma.$disconnect()
   }
-
-  return NextResponse.json({ message: 'OK' }, { status: 200 })
 }
