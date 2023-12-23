@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBKHz-h5_0-TyYsyoJhTOe4s8l4DY02slQ',
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: 'sistema-stockflow.firebaseapp.com',
   projectId: 'sistema-stockflow',
   storageBucket: 'sistema-stockflow.appspot.com',
