@@ -3,6 +3,7 @@ import { formattedMoney, unformattedMoney } from '@/functions/formattedMoney'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
 import { useQuery } from '@tanstack/react-query'
+import { parseCookies } from 'nookies'
 import { Dispatch, ReactNode, SetStateAction, createContext, useCallback, useEffect, useState } from 'react'
 
 interface ProductsContextData {
@@ -22,6 +23,7 @@ interface ProductsContextData {
   setPayment: Dispatch<SetStateAction<string>>
 
   handleAddProductNote: () => void
+  handleSaleProducts: (amount: string, amountTaxes: string) => void
 }
 
 interface ProductsProviderProps {
@@ -37,6 +39,7 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
   const [counter, setCounter] = useState(1)
   const [noteProducts, setNoteProducts] = useState<ProductProps[]>([])
   const [payment, setPayment] = useState<string>('')
+  const { 'user.id': userID } = parseCookies()
 
   const SelectingProduct = useCallback(() => {
     const data = productsItems.find((product) => product.id === productID && product)
@@ -71,6 +74,24 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
     setCounter(1)
   }
 
+  function handleSaleProducts(amount: string, amountTaxes: string) {
+    if (noteProducts.length === 0) {
+      alert('Selecione no mínimo um produto')
+      return
+    }
+
+    api
+      .post('sale', { userID, amount, amountTaxes, noteProducts })
+      .then((res) => {
+        alert('submit')
+        console.log(res.data)
+      })
+      .catch((e) => {
+        alert('failure')
+        console.log(e)
+      })
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -88,7 +109,8 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
         setNoteProducts,
         payment,
         setPayment,
-        handleAddProductNote
+        handleAddProductNote,
+        handleSaleProducts
       }}
     >
       {children}
