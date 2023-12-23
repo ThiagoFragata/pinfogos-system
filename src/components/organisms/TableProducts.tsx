@@ -8,7 +8,7 @@ import { SelectForm } from '../atoms/SelectForm'
 import { Button } from '../ui/button'
 
 export function TableProducts() {
-  const { noteProducts, setNoteProducts, payment, handleSaleProducts } = useProducts()
+  const { noteProducts, setNoteProducts, payment, handleSaleProducts, setPayment } = useProducts()
 
   const SomeNoteProduct = useCallback(() => {
     const someProduct = noteProducts?.map((product) => {
@@ -87,12 +87,17 @@ export function TableProducts() {
             <Button
               className="flex-1 flex flex-col items-start justify-start py-12 px-8 text-zinc-950 bg-rose-300 hover:bg-rose-500"
               variant="destructive"
-              onClick={() => setNoteProducts([])}
+              onClick={() => {
+                setNoteProducts([])
+                setPayment('')
+              }}
             >
               <p className="font-bold">Cancelar</p>
               <small>Venda aberta</small>
             </Button>
+
             <Button
+              disabled={!payment}
               onClick={() => handleSaleProducts(SomeNoteProduct().amountTotal, ApplyTaxes())}
               className="flex-1 flex flex-col items-start justify-start py-12 px-8 text-zinc-950 bg-emerald-300 hover:bg-emerald-500"
             >

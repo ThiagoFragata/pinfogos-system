@@ -44,7 +44,10 @@ export function SelectProduct() {
                   }}
                 >
                   <Check className={cn('mr-2 h-4 w-4', productID === product.id ? 'opacity-100' : 'opacity-0')} />
-                  {product.name}
+                  <div className="flex justify-between w-full">
+                    <span>{product.name}</span>
+                    <span>{product.qtd}</span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>

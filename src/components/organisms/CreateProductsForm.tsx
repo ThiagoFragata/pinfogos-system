@@ -75,7 +75,7 @@ export default function CreateProductsForm() {
         description: 'Produto adicionado no estoque'
       })
 
-      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['products-sales'] })
     },
     onError: (e) => {
       toast({

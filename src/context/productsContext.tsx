@@ -1,4 +1,6 @@
 'use client'
+import { queryClient } from '@/app/providers'
+import { useToast } from '@/components/ui/use-toast'
 import { formattedMoney, unformattedMoney } from '@/functions/formattedMoney'
 import { ProductProps } from '@/interfaces/products'
 import { api } from '@/services/axios/api'
@@ -22,6 +24,8 @@ interface ProductsContextData {
   payment: string
   setPayment: Dispatch<SetStateAction<string>>
 
+  loadingSale: boolean
+
   handleAddProductNote: () => void
   handleSaleProducts: (amount: string, amountTaxes: string) => void
 }
@@ -40,6 +44,8 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
   const [noteProducts, setNoteProducts] = useState<ProductProps[]>([])
   const [payment, setPayment] = useState<string>('')
   const { 'user.id': userID } = parseCookies()
+  const { toast } = useToast()
+  const [loadingSale, SetLoadingSale] = useState(false)
 
   const SelectingProduct = useCallback(() => {
     const data = productsItems.find((product) => product.id === productID && product)
@@ -79,16 +85,26 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
       alert('Selecione no mínimo um produto')
       return
     }
-
+    SetLoadingSale(true)
     api
       .post('sale', { userID, amount, amountTaxes, noteProducts })
-      .then((res) => {
-        alert('submit')
-        console.log(res.data)
+      .then(() => {
+        toast({
+          title: 'Sucesso',
+          description: 'Venda realizada'
+        })
       })
       .catch((e) => {
-        alert('failure')
-        console.log(e)
+        toast({
+          variant: 'destructive',
+          title: 'Falha',
+          description: e.message
+        })
+      })
+      .finally(() => {
+        setNoteProducts([])
+        SetLoadingSale(false)
+        queryClient.invalidateQueries({ queryKey: ['products-sales'] })
       })
   }
 
@@ -109,6 +125,7 @@ export function ProductsProvider({ children }: ProductsProviderProps) {
         setNoteProducts,
         payment,
         setPayment,
+        loadingSale,
         handleAddProductNote,
         handleSaleProducts
       }}

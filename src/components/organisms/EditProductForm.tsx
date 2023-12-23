@@ -90,7 +90,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
         description: 'Produto atualizado no estoque'
       })
 
-      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['products-sales'] })
       replace('/dashboard/product-stock')
     },
     onError: (e) => {
