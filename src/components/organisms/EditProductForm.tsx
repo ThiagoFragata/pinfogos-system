@@ -107,7 +107,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
   }
 
   return (
-    <div className="flex gap-8 justify-between items-center">
+    <div className="flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
       <Image
         src={product.photo ? product.photo : notImg}
         alt={product.name}
