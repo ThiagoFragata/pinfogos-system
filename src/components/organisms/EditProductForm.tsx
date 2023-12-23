@@ -107,85 +107,87 @@ export default function EditProductForm({ product }: EditProductFormProps) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
-      <Image
-        src={product.photo ? product.photo : notImg}
-        alt={product.name}
-        className="border mx-auto"
-        width={300}
-        height={300}
-      />
+    product.id && (
+      <div className="flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
+        <Image
+          src={product.photo ? product.photo : notImg}
+          alt={product.name}
+          className="border mx-auto"
+          width={300}
+          height={300}
+        />
 
-      <div className="flex-1 space-y-8">
-        <div>
-          <Label htmlFor="thumbnailProduct">{product.photo ? 'Atualizar thumbnail' : 'Adicionar thumbnail'}</Label>
-          <Input
-            id="thumbnailProduct"
-            type="file"
-            accept="png/jpg"
-            className="border-dashed mt-2 mb-4"
-            onChange={handleUploadingProduct}
-          />
-        </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <ItemForm label="Atualizar nome" type="text" placeholder="Informe o nome" field={{ ...field }} />
-              )}
+        <div className="flex-1 space-y-8">
+          <div>
+            <Label htmlFor="thumbnailProduct">{product.photo ? 'Atualizar thumbnail' : 'Adicionar thumbnail'}</Label>
+            <Input
+              id="thumbnailProduct"
+              type="file"
+              accept="png/jpg"
+              className="border-dashed mt-2 mb-4"
+              onChange={handleUploadingProduct}
             />
+          </div>
 
-            <div className="flex gap-4 w-full justify-between">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="value"
+                name="name"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Atualizar Valor</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Digite o valor"
-                        value={field.value}
-                        onChange={(i) => field.onChange(formattedMoney(i.target.value))}
-                        prefix={'R$ '}
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <ItemForm label="Atualizar nome" type="text" placeholder="Informe o nome" field={{ ...field }} />
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="qtd"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Adicionar mais</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Digite a quantidade"
-                        value={field.value}
-                        onChange={(i) => field.onChange(Number(onlyNumbers(i.target.value)))}
-                        prefix={'R$ '}
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+              <div className="flex gap-4 w-full justify-between">
+                <FormField
+                  control={form.control}
+                  name="value"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Atualizar Valor</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Digite o valor"
+                          value={field.value}
+                          onChange={(i) => field.onChange(formattedMoney(i.target.value))}
+                          prefix={'R$ '}
+                          type="text"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <div className="flex gap-2">
-              <ButtonDefault label="Atualizar" type="submit" variant="default" loading={isPending} />
-            </div>
-          </form>
-        </Form>
+                <FormField
+                  control={form.control}
+                  name="qtd"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Adicionar mais</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Digite a quantidade"
+                          value={field.value}
+                          onChange={(i) => field.onChange(Number(onlyNumbers(i.target.value)))}
+                          prefix={'R$ '}
+                          type="text"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <ButtonDefault label="Atualizar" type="submit" variant="default" loading={isPending} />
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
-    </div>
+    )
   )
 }
