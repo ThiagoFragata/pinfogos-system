@@ -21,7 +21,7 @@ export function Cards() {
   }
 
   return (
-    <div className="flex gap-4 my-8">
+    <div className="hidden md:flex gap-4 my-8">
       <Card
         subtitle="Produtos cadastrados"
         title={productsItems?.length}
