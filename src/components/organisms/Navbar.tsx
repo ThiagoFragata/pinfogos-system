@@ -13,7 +13,7 @@ export function Navbar() {
 
   return (
     <div className="flex items-center justify-between">
-      <Image src={logo} alt={'Parintins Show Fogos'} width={200} />
+      <Image src={logo} alt={'Parintins Show Fogos'} width={200} className="w-[150px] md:w-[200px]" />
 
       <Menu />
 
