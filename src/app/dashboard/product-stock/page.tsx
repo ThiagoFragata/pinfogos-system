@@ -1,18 +1,11 @@
-import { ButtonRedirect } from '@/components/atoms/ButtonRedirect'
-import { SelectSearchProducts } from '@/components/molecules/SelectSearchProducts'
-import { Cards } from '@/components/organisms/Cards'
-import { StockProducts } from '@/components/organisms/StockProducts'
+'use client'
+import { useProducts } from '@/hooks/useProducts'
+import Loading from '../loading'
+import { columns } from './columns'
+import { DataTable } from './data-table'
 
 export default function ProductStock() {
-  return (
-    <div>
-      <Cards />
-      <div className="flex gap-4 my-8">
-        <SelectSearchProducts />
-        <ButtonRedirect label="Adicionar" url="/dashboard/product-stock/add-product" />
-      </div>
+  const { productsItems, isLoading } = useProducts()
 
-      <StockProducts />
-    </div>
-  )
+  return isLoading ? <Loading /> : <DataTable columns={columns} data={productsItems} />
 }
