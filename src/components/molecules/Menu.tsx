@@ -8,20 +8,10 @@ export function Menu() {
 
   return (
     <ul className="flex gap-4 text-zinc-400 font-medium">
-      <li
-        className={
-          pathname === '/dashboard/sales' ? 'text-zinc-900 dark:text-white' : ''
-        }
-      >
+      <li className={pathname === '/dashboard/sales' ? 'text-zinc-900 dark:text-white' : ''}>
         <Link href="/dashboard/sales">Vendas</Link>
       </li>
-      <li
-        className={
-          pathname === '/dashboard/product-stock'
-            ? 'text-zinc-900 dark:text-white'
-            : ''
-        }
-      >
+      <li className={pathname === '/dashboard/product-stock' ? 'text-zinc-900 dark:text-white' : ''}>
         <Link href="/dashboard/product-stock">Estoque</Link>
       </li>
     </ul>

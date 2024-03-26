@@ -5,13 +5,13 @@ import Image from 'next/image'
 export default function Home() {
   return (
     <div className="flex min-h-screen">
-      <div className="flex flex-col flex-1 justify-between bg-zinc-950 text-white p-8">
+      <div className="hidden md:flex flex-col flex-1 justify-between bg-zinc-950 text-white p-8">
         <Image src={logo} alt={''} />
 
         <h3>Conectando estoque e vendas com eficiência e precisão.</h3>
       </div>
 
-      <div className="flex flex-col justify-between text-center p-8">
+      <div className="flex flex-col justify-between mx-auto text-center p-8">
         <div className="space-y-8">
           <div>
             <h2 className="font-bold text-xl">StockFlow</h2>
@@ -24,8 +24,7 @@ export default function Home() {
         <div className="text-sm">
           <p>Ao clicar em entrar você concorda com nossos </p>
           <p>
-            <strong>Termos de uso</strong> e{' '}
-            <strong>Politica de privacidade.</strong>
+            <strong>Termos de uso</strong> e <strong>Politica de privacidade.</strong>
           </p>
         </div>
       </div>

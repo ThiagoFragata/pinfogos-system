@@ -1,7 +1,11 @@
+'use client'
+import { useProducts } from '@/hooks/useProducts'
+import Loading from '../loading'
+import { columns } from './columns'
+import { DataTable } from './data-table'
+
 export default function ProductStock() {
-  return (
-    <div>
-      <h1>Estoque</h1>
-    </div>
-  )
+  const { productsItems, isLoading } = useProducts()
+
+  return isLoading ? <Loading /> : <DataTable columns={columns} data={productsItems} />
 }
