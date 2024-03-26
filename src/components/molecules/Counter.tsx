@@ -24,7 +24,7 @@ export function Counter() {
     <div>
       <div className="flex gap-2">
         <Button className="p-3 bg-red-500" onClick={decrement}>
-          <Minus className="h-4 w-4" />
+          <Minus className="w-4 h-4" />
         </Button>
         <Input
           className="max-w-[100px] text-center"
@@ -36,10 +36,10 @@ export function Counter() {
           onChange={(e) => setCounter(Number(e.target.value))}
         />
         <Button className="p-3 bg-green-500" onClick={increment}>
-          <Plus className="h-4 w-4" />
+          <Plus className="w-4 h-4" />
         </Button>
       </div>
-      {counter > 1 && (
+      {counter >= 0 && (
         <div className="flex flex-col gap-2 mt-4">
           <h1 className="text-lg">Subtotal</h1>
           <p className="text-3xl font-semibold">
