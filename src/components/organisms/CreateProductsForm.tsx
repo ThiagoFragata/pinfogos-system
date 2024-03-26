@@ -21,7 +21,8 @@ import { useToast } from '../ui/use-toast'
 export const formSchemaAddProduct = z.object({
   name: z.string().min(1, 'Informe o nome do produto'),
   qtd: z.number().min(1, 'Informe a quantidade do produto'),
-  value: z.string().min(1, 'Informe o valor do produto')
+  value: z.string().min(1, 'Informe o valor do produto'),
+  code: z.string().min(1, 'Informe o número do código de barra')
 })
 
 export default function CreateProductsForm() {
@@ -30,9 +31,13 @@ export default function CreateProductsForm() {
   const [thumbnail, setThumbnail] = useState<string>()
 
   function handleUploadingProduct() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pictureInput: any = document.getElementById('thumbnailProduct')
-    const selectedFile = pictureInput.files[0] ?? null
+    const pictureInput: HTMLInputElement | null = document.getElementById('thumbnailProduct') as HTMLInputElement
+    let selectedFile: File | null = null
+
+    if (pictureInput) {
+      selectedFile = pictureInput.files ? pictureInput.files[0] : null
+      console.log(selectedFile)
+    }
 
     if (selectedFile !== null) {
       const storageRef = ref(storage, `thumbnails/${userID}/${selectedFile.name}`)
@@ -58,11 +63,7 @@ export default function CreateProductsForm() {
   }
 
   const form = useForm<z.infer<typeof formSchemaAddProduct>>({
-    resolver: zodResolver(formSchemaAddProduct),
-    defaultValues: {
-      name: '',
-      value: ''
-    }
+    resolver: zodResolver(formSchemaAddProduct)
   })
 
   const { mutate, isPending } = useMutation({
@@ -109,11 +110,24 @@ export default function CreateProductsForm() {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <ItemForm label="Produto" type="text" placeholder="Informe o nome" field={{ ...field }} />
+              <ItemForm label="Produto" type="text" placeholder="Informe o nome do produto" field={{ ...field }} />
             )}
           />
 
-          <div className="flex gap-4 w-full justify-between">
+          <div className="flex justify-between w-full gap-4">
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <ItemForm
+                  label="Código de barra"
+                  type="text"
+                  placeholder="Digite o código de barra do produto"
+                  field={{ ...field }}
+                />
+              )}
+            />
+
             <FormField
               control={form.control}
               name="qtd"

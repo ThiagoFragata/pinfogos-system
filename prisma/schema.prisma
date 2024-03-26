@@ -27,6 +27,7 @@ model Product {
   value String
   qtd   Int
   photo String?
+  code  String?
 
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt

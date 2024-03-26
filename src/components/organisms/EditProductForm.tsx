@@ -28,9 +28,10 @@ interface EditProductFormProps {
 
 const formSchemaEditProduct = z.object({
   name: z.string().min(1, 'Informe o nome do produto'),
-  qtd: z.number().min(0, 'Informe a quantidade do produto'),
-  qtdr: z.number().min(0, 'Informe a quantidade do produto'),
-  value: z.string().min(1, 'Informe o valor do produto')
+  code: z.string().min(1, 'Informe o código de barra'),
+  qtd: z.number().min(0, 'Informe a quantidade a ser adicionada ao estoque'),
+  qtdr: z.number().min(0, 'Informe a quantidade a ser removida do estoque'),
+  value: z.string().min(0, 'Informe o valor do produto')
 })
 
 export default function EditProductForm({ product }: EditProductFormProps) {
@@ -40,9 +41,13 @@ export default function EditProductForm({ product }: EditProductFormProps) {
   const [thumbnail, setThumbnail] = useState<string>()
 
   function handleUploadingProduct() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pictureInput: any = document.getElementById('thumbnailProduct')
-    const selectedFile = pictureInput.files[0] ?? null
+    const pictureInput: HTMLInputElement | null = document.getElementById('thumbnailProduct') as HTMLInputElement
+    let selectedFile: File | null = null
+
+    if (pictureInput) {
+      selectedFile = pictureInput.files ? pictureInput.files[0] : null
+      console.log(selectedFile)
+    }
 
     if (selectedFile !== null) {
       const storageRef = ref(storage, `thumbnails/${userID}/${selectedFile.name}`)
@@ -73,7 +78,8 @@ export default function EditProductForm({ product }: EditProductFormProps) {
       name: product.name,
       qtd: 0,
       qtdr: 0,
-      value: product.value
+      value: product.value,
+      code: product.code
     }
   })
 
@@ -83,7 +89,8 @@ export default function EditProductForm({ product }: EditProductFormProps) {
         photo: thumbnail,
         qtd: product.qtd + values.qtd - values.qtdr,
         name: values.name,
-        value: values.value
+        value: values.value,
+        code: values.code
       })
     },
     onSuccess: () => {
@@ -110,11 +117,11 @@ export default function EditProductForm({ product }: EditProductFormProps) {
 
   return (
     product.id && (
-      <div className="flex flex-col md:flex-row gap-8 justify-between items-center mb-8">
+      <div className="flex flex-col items-center justify-between gap-8 mb-8 md:flex-row">
         <Image
           src={product.photo ? product.photo : notImg}
           alt={product.name}
-          className="border mx-auto"
+          className="mx-auto border"
           width={300}
           height={300}
         />
@@ -126,7 +133,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
               id="thumbnailProduct"
               type="file"
               accept="png/jpg"
-              className="border-dashed mt-2 mb-4"
+              className="mt-2 mb-4 border-dashed"
               onChange={handleUploadingProduct}
             />
           </div>
@@ -141,7 +148,20 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                 )}
               />
 
-              <div className="flex gap-4 w-full justify-between">
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <ItemForm
+                    label="Atualizar código de barra"
+                    type="number"
+                    placeholder="Informe código de barra"
+                    field={{ ...field }}
+                  />
+                )}
+              />
+
+              <div className="flex justify-between w-full gap-4">
                 <FormField
                   control={form.control}
                   name="value"

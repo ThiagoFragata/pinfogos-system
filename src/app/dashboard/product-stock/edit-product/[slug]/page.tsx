@@ -23,8 +23,8 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
       {!productItens && (
         <div className="flex flex-col mt-[25%] translate-y-[-25%] items-center justify-center gap-4">
           <Loader2 className="animate-spin" />
-          <div className="text-center flex flex-col gap-2">
-            <h1 className="font-bold text-lg">Carregando dados do produto</h1>
+          <div className="flex flex-col gap-2 text-center">
+            <h1 className="text-lg font-bold">Carregando dados do produto</h1>
             <p className="font-light">Aguarde alguns instantes, enquanto buscamos os dados do produto</p>
           </div>
         </div>
@@ -32,10 +32,10 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
 
       {productItens && (
         <>
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             <ButtonBack />
             <div className="my-8">
-              <h1 className="font-bold text-xl">{productItens.name}</h1>
+              <h1 className="text-xl font-bold">{productItens.name}</h1>
               <p>Editar produto</p>
             </div>
           </div>

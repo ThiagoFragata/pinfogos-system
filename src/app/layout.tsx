@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
 import { Chivo as Font } from 'next/font/google'
@@ -24,6 +25,9 @@ const fontSans = Font({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt_BR">
+      <head>
+        <script src="http://localhost:8097" />
+      </head>
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <Providers>{children}</Providers>
       </body>

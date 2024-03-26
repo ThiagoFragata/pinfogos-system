@@ -50,7 +50,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-md min-h-screen mx-auto">
+    <div className="flex flex-col items-center justify-center max-w-md min-h-screen mx-auto dark:border dark:border-neutral-950">
       <div className="flex items-center w-full gap-4 mb-8">
         <ButtonBack />
         <div>
