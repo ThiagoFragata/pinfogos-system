@@ -29,6 +29,7 @@ interface EditProductFormProps {
 const formSchemaEditProduct = z.object({
   name: z.string().min(1, 'Informe o nome do produto'),
   qtd: z.number().min(0, 'Informe a quantidade do produto'),
+  qtdr: z.number().min(0, 'Informe a quantidade do produto'),
   value: z.string().min(1, 'Informe o valor do produto')
 })
 
@@ -71,6 +72,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
     defaultValues: {
       name: product.name,
       qtd: 0,
+      qtdr: 0,
       value: product.value
     }
   })
@@ -79,7 +81,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
     mutationFn: (values: z.infer<typeof formSchemaEditProduct>) => {
       return api.put(`product?product-id=${product.id}`, {
         photo: thumbnail,
-        qtd: product.qtd + values.qtd,
+        qtd: product.qtd + values.qtd - values.qtdr,
         name: values.name,
         value: values.value
       })
@@ -165,7 +167,27 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                   name="qtd"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Adicionar mais</FormLabel>
+                      <FormLabel>Adicionar no estoque</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Digite a quantidade"
+                          value={field.value}
+                          onChange={(i) => field.onChange(Number(onlyNumbers(i.target.value)))}
+                          prefix={'R$ '}
+                          type="text"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="qtdr"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Retirar do estoque</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Digite a quantidade"
