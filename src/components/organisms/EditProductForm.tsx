@@ -79,7 +79,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
       qtd: 0,
       qtdr: 0,
       value: product.value,
-      code: product.code
+      code: product.code || ''
     }
   })
 

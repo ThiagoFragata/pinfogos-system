@@ -4,5 +4,5 @@ export interface ProductProps {
   value: string
   qtd: number
   photo: string | null
-  code?: string
+  code?: string | null
 }

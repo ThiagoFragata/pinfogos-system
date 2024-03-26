@@ -8,6 +8,10 @@ import { Button } from '../ui/button'
 export function AddProductShopCar() {
   const { productSelected, handleAddProductNote } = useProducts()
 
+  if (!productSelected) {
+    return null
+  }
+
   return (
     <div className="flex flex-col items-start justify-between gap-8 mt-8">
       {productSelected &&

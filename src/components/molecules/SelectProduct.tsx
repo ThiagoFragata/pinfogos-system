@@ -1,5 +1,4 @@
 'use client'
-
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react'
 import * as React from 'react'
 
@@ -19,11 +18,11 @@ export function SelectProduct() {
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="justify-between">
           <div className="flex items-center gap-2">
-            {isLoading && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
-            {isRefetching && <Loader2 className="ml-2 h-4 w-4 shrink-0 opacity-50 animate-spin" />}
+            {isLoading && <Loader2 className="w-4 h-4 ml-2 opacity-50 shrink-0 animate-spin" />}
+            {isRefetching && <Loader2 className="w-4 h-4 ml-2 opacity-50 shrink-0 animate-spin" />}
             {value ? productsItems.find((product) => product.id === productID)?.name : 'Selecione um produto...'}
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0">

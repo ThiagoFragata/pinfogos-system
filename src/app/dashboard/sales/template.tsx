@@ -1,5 +1,4 @@
 'use client'
-
 import { useProducts } from '@/hooks/useProducts'
 import { Loader2 } from 'lucide-react'
 

@@ -1,4 +1,3 @@
-'use client'
 import { SelectProduct } from '@/components/molecules/SelectProduct'
 import { AddProductShopCar } from '@/components/organisms/AddProductShopCar'
 import { TableProducts } from '@/components/organisms/TableProducts'
