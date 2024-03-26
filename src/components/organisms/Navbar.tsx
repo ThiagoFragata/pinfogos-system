@@ -7,6 +7,7 @@ import logo from '@/assets/svg/logo.svg'
 import { useAuth } from '@/hooks/useAuth'
 import { ButtonSignOut } from '../atoms/ButtonSignOut'
 import { ButtonDialog } from '../molecules/ButtonDialog'
+import { MenuProfile } from '../molecules/MenuProfile'
 
 export function Navbar() {
   const { SignOut } = useAuth()
@@ -17,9 +18,10 @@ export function Navbar() {
 
       <Menu />
 
-      <ButtonDialog title="Deseja sair" description="Você realmente deseja sair de sua conta?" onPress={SignOut}>
+      {/* <ButtonDialog title="Deseja sair" description="Você realmente deseja sair de sua conta?" onPress={SignOut}>
         <ButtonSignOut />
-      </ButtonDialog>
+      </ButtonDialog> */}
+      <MenuProfile />
     </div>
   )
 }
