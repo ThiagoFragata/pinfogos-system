@@ -1,11 +1,12 @@
 'use client'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { PDFGenerator } from '@/functions/PdfGenerator'
 import { formattedMoney, unformattedMoney } from '@/functions/formattedMoney'
 import { useProducts } from '@/hooks/useProducts'
 import { useCallback, useEffect } from 'react'
 import { Card } from '../atoms/Card'
 import { SelectForm } from '../atoms/SelectForm'
 import { Button } from '../ui/button'
+import { ProductsNote } from './ProductsNote'
 
 export function TableProducts() {
   const { noteProducts, setNoteProducts, payment, handleSaleProducts, setPayment } = useProducts()
@@ -44,48 +45,40 @@ export function TableProducts() {
   }, [ApplyTaxes, payment])
 
   return (
-    <div className="flex-1 flex flex-col gap-4">
-      <div className="flex gap-4">
-        <Card
-          subtitle="Subtotal"
-          title={SomeNoteProduct().amountTotal}
-          description="Valor total dos produtos"
-          loading={false}
-        />
-        <Card subtitle="Total" title={ApplyTaxes()} description="Valor total dos produtos + taxas" loading={false} />
+    <div className="flex flex-col flex-1 gap-4">
+      <div id="pdf-content" className="flex flex-col">
+        <div className="flex gap-4">
+          <Card
+            subtitle="Subtotal"
+            title={SomeNoteProduct().amountTotal}
+            description="Valor total dos produtos"
+            loading={false}
+          />
+          <Card subtitle="Total" title={ApplyTaxes()} description="Valor total dos produtos + taxas" loading={false} />
+        </div>
+
+        <ProductsNote />
       </div>
-
-      <Table>
-        <TableCaption>
-          {noteProducts.length === 0 ? 'Nenhum item adicionado' : 'Produtos adicionado(s) a compra'}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="">Produto</TableHead>
-            <TableHead>Quantidade</TableHead>
-            <TableHead className="text-right">Valor</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        {noteProducts.length > 0 && (
-          <TableBody>
-            {noteProducts.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.qtd}</TableCell>
-                <TableCell className="text-right">{product.value}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        )}
-      </Table>
-
       {noteProducts.length > 0 && (
         <div className="flex flex-col gap-4 mt-auto">
           <SelectForm />
+
           <div className="flex justify-between gap-4">
             <Button
-              className="flex-1 flex flex-col items-start justify-start py-12 px-8 text-zinc-950 bg-rose-300 hover:bg-rose-500"
+              className="flex flex-col items-start justify-start flex-1 px-8 py-12 text-zinc-950 bg-amber-300 hover:bg-amber-500"
+              variant="destructive"
+              onClick={() => {
+                PDFGenerator()
+                setNoteProducts([])
+                setPayment('')
+              }}
+            >
+              <p className="font-bold">Exportar</p>
+              <small>Gerar orçamento</small>
+            </Button>
+
+            <Button
+              className="flex flex-col items-start justify-start flex-1 px-8 py-12 text-zinc-950 bg-rose-300 hover:bg-rose-500"
               variant="destructive"
               onClick={() => {
                 setNoteProducts([])
@@ -98,8 +91,11 @@ export function TableProducts() {
 
             <Button
               disabled={!payment}
-              onClick={() => handleSaleProducts(SomeNoteProduct().amountTotal, ApplyTaxes())}
-              className="flex-1 flex flex-col items-start justify-start py-12 px-8 text-zinc-950 bg-emerald-300 hover:bg-emerald-500"
+              onClick={() => {
+                handleSaleProducts(SomeNoteProduct().amountTotal, ApplyTaxes())
+                PDFGenerator()
+              }}
+              className="flex flex-col items-start justify-start flex-1 px-8 py-12 text-zinc-950 bg-emerald-300 hover:bg-emerald-500"
             >
               <p className="font-bold">Finalizar</p>
               <small>Venda</small>

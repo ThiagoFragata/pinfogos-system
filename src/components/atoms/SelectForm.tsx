@@ -25,7 +25,7 @@ export function SelectForm() {
 
   return (
     <Select onValueChange={setPayment}>
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="flex-1">
         <SelectValue placeholder="Forma de pagamento" />
       </SelectTrigger>
 

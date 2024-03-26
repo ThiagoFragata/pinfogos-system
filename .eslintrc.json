@@ -17,9 +17,13 @@
   },
   "overrides": [
     {
-      "files": ["**/*.tsx","**/*.ts"],
+      "files": [
+        "**/*.tsx",
+        "**/*.ts"
+      ],
       "rules": {
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "new-cap": "off"
       }
     }
   ]
