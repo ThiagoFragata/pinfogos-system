@@ -1,11 +1,13 @@
 'use client'
 import { useAuth } from '@/hooks/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { ButtonDefault } from '../atoms/ButtonDefault'
 import { ItemForm } from '../molecules/ItemForm'
+import { Button } from '../ui/button'
 import { Form, FormField } from '../ui/form'
 
 export const formSchemaSignIn = z.object({
@@ -16,6 +18,7 @@ export const formSchemaSignIn = z.object({
 export default function SignInForm() {
   const [loading, setLoading] = useState(false)
   const { SignIn } = useAuth()
+  const { push } = useRouter()
 
   const form = useForm<z.infer<typeof formSchemaSignIn>>({
     resolver: zodResolver(formSchemaSignIn),
@@ -46,7 +49,12 @@ export default function SignInForm() {
           )}
         />
 
-        <ButtonDefault loading={loading} label="Entrar" className="w-full" />
+        <div className="flex flex-col gap-4">
+          <ButtonDefault loading={loading} label="Entrar" className="w-full" />
+          <Button type="button" onClick={() => push('/forgot-password')} variant="link">
+            Esqueci minha senha
+          </Button>
+        </div>
       </form>
     </Form>
   )
