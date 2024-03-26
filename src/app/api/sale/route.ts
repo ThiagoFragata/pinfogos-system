@@ -1,5 +1,6 @@
 import { NoteProps } from '@/interfaces/sales'
 import { PrismaClient } from '@prisma/client'
+import { ObjectId } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
@@ -9,18 +10,23 @@ export async function POST(req: NextRequest) {
 
   try {
     if (body.noteProducts && Array.isArray(body.noteProducts)) {
-      const user = await prisma.user.findUnique({
-        where: {
-          uid: body.userID
-        },
-        select: {
-          id: true
-        }
-      })
+      const result = await prisma.$transaction(async (transaction) => {
+        const user = await transaction.user.findUnique({
+          where: {
+            uid: body.userID
+          },
+          select: {
+            id: true
+          }
+        })
 
-      if (user) {
-        body.noteProducts.map(async (product) => {
-          await prisma.product.update({
+        if (!user) {
+          console.log(`Nenhum usuário encontrado para o UID ${body.userID}`)
+          throw new Error('Usuário sem permissão/inexistente')
+        }
+
+        const updateProductPromises = body.noteProducts.map((product) => {
+          return transaction.product.update({
             where: { id: product.id },
             data: {
               qtd: {
@@ -30,9 +36,11 @@ export async function POST(req: NextRequest) {
           })
         })
 
-        const newNote = await prisma.note.create({
+        await Promise.all(updateProductPromises)
+
+        const newNote = await transaction.note.create({
           data: {
-            userId: user.id,
+            userId: new ObjectId(user.id).toString(),
             amount: body.amount,
             amountTaxe: body.amountTaxes
           }
@@ -43,27 +51,26 @@ export async function POST(req: NextRequest) {
             qtd: sale.qtd,
             productID: sale.id,
             value: sale.value,
-            noteId: newNote.id,
-            userId: user.id
+            noteId: new ObjectId(newNote.id).toString(),
+            userId: new ObjectId(user.id).toString()
           }
         })
 
-        await prisma.sale.createMany({
+        await transaction.sale.createMany({
           data: sales
         })
 
-        return NextResponse.json({ message: 'Venda registrada' }, { status: 200 })
-      } else {
-        console.log(`Nenhum usuário encontrado para o UID ${body.userID}`)
-        throw new Error('Usuário sem permissão/inexistente')
-      }
+        return { message: 'Venda registrada' }
+      })
+
+      return NextResponse.json(result, { status: 200 })
     } else {
       console.error('body.sales não é um array ou é indefinido.')
       throw new Error('Erro ao efetuar a venda, tente novamente!')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error)
-    return NextResponse.json({ message: error }, { status: 400 })
+    return NextResponse.json({ message: error.message }, { status: 400 })
   } finally {
     await prisma.$disconnect()
   }
